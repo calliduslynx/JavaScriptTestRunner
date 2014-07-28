@@ -7,13 +7,19 @@ import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.InitializationError;
 
+/**
+ * With this test runner it is possible to run JavaScript unit tests like unit tests in java. So it is possible to integrate them easily without installing
+ * node.js for example
+ * 
+ * To provide the test url to the runner it is required that the test class implements {@link JavaScriptTestStarter}
+ */
 public class JavaScriptTestRunner extends BlockJUnit4ClassRunner {
     private String[] jsTestUrls;
     private JavaScriptTestRunReader javaScriptTestRunReader;
 
     public JavaScriptTestRunner(Class<?> klass) throws InitializationError {
         super(klass);
-        loadUrls(klass);
+        jsTestUrls = getJSTestUrls(klass);
 
         javaScriptTestRunReader = new JavaScriptTestRunReader() {
             @Override
@@ -27,9 +33,11 @@ public class JavaScriptTestRunner extends BlockJUnit4ClassRunner {
         };
     }
 
-    private void loadUrls(Class<?> klass) {
-        JavaScriptTestStarter javaScriptTestStarter = getJavaScriptTestStarterInstance(klass);
-        jsTestUrls = javaScriptTestStarter.getJSTestUrls();
+    /**
+     * returns urls out of the test class
+     */
+    private String[] getJSTestUrls(Class<?> klass) {
+        return getJavaScriptTestStarterInstance(klass).getJSTestUrls();
     }
 
     private JavaScriptTestStarter getJavaScriptTestStarterInstance(Class<?> klass) {
@@ -40,11 +48,14 @@ public class JavaScriptTestRunner extends BlockJUnit4ClassRunner {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
-        throw new RuntimeException();
+        throw new RuntimeException("the test class " + klass + " doesn't implement the interface " + JavaScriptTestStarter.class);
     }
 
+    /**
+     * remove all java tests, fill up with javascript tests -> for this all js tests will be started at this point of time
+     */
     @Override
     protected List<FrameworkMethod> getChildren() {
         List<FrameworkMethod> children = super.getChildren();
