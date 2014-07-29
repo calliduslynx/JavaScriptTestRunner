@@ -35,6 +35,8 @@ repositories {
 
 dependencies {
     compile (
+        'org.seleniumhq.selenium:selenium-firefox-driver:2.37.0',
+	    'org.seleniumhq.selenium:selenium-java:2.39.0',
         'junit:junit:4.11'
     )
 }
