@@ -13,7 +13,7 @@ public class JavaScriptTestRun {
     private final boolean successful;
 
     /**
-     * 
+     *
      * @param name
      *            the name of the javascript test
      * @param successful
@@ -22,6 +22,12 @@ public class JavaScriptTestRun {
     public JavaScriptTestRun(String name, boolean successful) {
         this.name = name;
         this.successful = successful;
+    }
+
+    @Override
+    public String toString() {
+        String success = successful ? " [PASSED]" : " [FAILED]";
+        return name + success;
     }
 
     /**

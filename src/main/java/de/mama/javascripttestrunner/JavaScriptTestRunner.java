@@ -1,6 +1,5 @@
 package de.mama.javascripttestrunner;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.runners.BlockJUnit4ClassRunner;
@@ -10,7 +9,7 @@ import org.junit.runners.model.InitializationError;
 /**
  * With this test runner it is possible to run JavaScript unit tests like unit tests in java. So it is possible to integrate them easily without installing
  * node.js for example
- * 
+ *
  * To provide the test url to the runner it is required that the test class implements {@link JavaScriptTestStarter}
  */
 public class JavaScriptTestRunner extends BlockJUnit4ClassRunner {
@@ -21,16 +20,7 @@ public class JavaScriptTestRunner extends BlockJUnit4ClassRunner {
         super(klass);
         jsTestUrls = getJSTestUrls(klass);
 
-        javaScriptTestRunReader = new JavaScriptTestRunReader() {
-            @Override
-            public List<JavaScriptTestRun> readFrom(String jsTestUrl) {
-                List<JavaScriptTestRun> runs = new ArrayList<>();
-                runs.add(new JavaScriptTestRun("TEST 1 - " + jsTestUrl, true));
-                runs.add(new JavaScriptTestRun("TEST 2 - " + jsTestUrl, true));
-                runs.add(new JavaScriptTestRun("TEST 3 - " + jsTestUrl, true));
-                return runs;
-            }
-        };
+        javaScriptTestRunReader = new JasmineReader();
     }
 
     /**

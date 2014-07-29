@@ -13,8 +13,8 @@ public class JavaScriptTestSuite implements JavaScriptTestStarter {
     @Override
     public String[] getJSTestUrls() {
         return new String[]{
-                "file:///Users/calliduslynx/Documents/workspace/planme/src/main/webapp/javascript-testing/test.html",
-                "file:///Users/calliduslynx/Documents/workspace/planme/src/main/webapp/javascript-testing/test2.html"
+                "file:///home/dawn-ubuntu/workspace/JavaScriptTestRunner/src/test/resources/test.html"
+                // "file:///Users/calliduslynx/Documents/workspace/planme/src/main/webapp/javascript-testing/test2.html"
         };
     }
 }
