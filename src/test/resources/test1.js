@@ -1,4 +1,4 @@
-describe('Patientsearch', function() {
+describe('Anderes Ding', function() {
 	it('should open on startup', function() {
 	});
 	it('should be closed after click in open range', function() {
