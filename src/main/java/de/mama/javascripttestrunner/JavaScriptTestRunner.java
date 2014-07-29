@@ -2,6 +2,8 @@ package de.mama.javascripttestrunner;
 
 import java.util.List;
 
+import org.junit.runner.manipulation.Filter;
+import org.junit.runner.manipulation.NoTestsRemainException;
 import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.InitializationError;
@@ -20,7 +22,7 @@ public class JavaScriptTestRunner extends BlockJUnit4ClassRunner {
         super(klass);
         jsTestUrls = getJSTestUrls(klass);
 
-        javaScriptTestRunReader = new JasmineReader();
+        javaScriptTestRunReader = new TestRunReaderMock();
 
     }
 
@@ -66,5 +68,9 @@ public class JavaScriptTestRunner extends BlockJUnit4ClassRunner {
             }
         }
         javaScriptTestRunReader.cleanUp();
+    }
+
+    @Override
+    public void filter(Filter filter) throws NoTestsRemainException {
     }
 }
