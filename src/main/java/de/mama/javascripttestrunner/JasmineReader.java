@@ -22,12 +22,18 @@ public class JasmineReader implements JavaScriptTestRunReader {
      */
     private Selenium web;
 
-    /**
-     * Init selenium and opens a firefoxwindow.
-     */
-    public JasmineReader() {
+    @Override
+    public void startUp() {
         driver = new FirefoxDriver();
         web = new WebDriverBackedSelenium(driver, "http://www.google.de");
+
+    }
+
+    @Override
+    public void cleanUp() {
+        web.close();
+        System.out.println("browswer closed");
+
     }
 
     /*
@@ -36,8 +42,13 @@ public class JasmineReader implements JavaScriptTestRunReader {
     @Override
     public List<JavaScriptTestRun> readFrom(String jsTestUrl) {
         List<JavaScriptTestRun> testRuns = new ArrayList<JavaScriptTestRun>();
+        System.out.println("starting the awesomeness");
         web.open(jsTestUrl); // load the url
-        web.click("css=.summaryMenuItem"); // click one of the menu-button to get to the resultpage
+
+        if (web.isElementPresent("css=.summmaryMenuItem")) {
+            System.out.println("click menu");
+            web.click("css=.summaryMenuItem"); // click one of the menu-button to get to the resultpage
+        }
 
         // Get all single specs as WebElement
         List<WebElement> specs = driver.findElements(By.cssSelector(" .specSummary"));
@@ -58,7 +69,6 @@ public class JasmineReader implements JavaScriptTestRunReader {
             testRuns.add(new JavaScriptTestRun(name, success));
         }
 
-        web.close();
         return testRuns;
     }
 
@@ -78,4 +88,5 @@ public class JasmineReader implements JavaScriptTestRunReader {
         }
         return false;
     }
+
 }

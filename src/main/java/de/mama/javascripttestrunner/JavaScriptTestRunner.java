@@ -21,6 +21,7 @@ public class JavaScriptTestRunner extends BlockJUnit4ClassRunner {
         jsTestUrls = getJSTestUrls(klass);
 
         javaScriptTestRunReader = new JasmineReader();
+
     }
 
     /**
@@ -57,11 +58,13 @@ public class JavaScriptTestRunner extends BlockJUnit4ClassRunner {
     }
 
     private void runJavascriptTests(List<FrameworkMethod> children) {
+        javaScriptTestRunReader.startUp();
         for (String jsTestUrl : jsTestUrls) {
             List<JavaScriptTestRun> testRuns = javaScriptTestRunReader.readFrom(jsTestUrl);
             for (JavaScriptTestRun testRun : testRuns) {
                 children.add(testRun.getFrameworkMethod());
             }
         }
+        javaScriptTestRunReader.cleanUp();
     }
 }
