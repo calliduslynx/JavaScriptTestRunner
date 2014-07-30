@@ -24,7 +24,7 @@ public class JavaScriptTestRunner extends BlockJUnit4ClassRunner {
         super(klass);
         jsTestUrls = getJSTestUrls(klass);
 
-        javaScriptTestRunReader = new TestRunReaderMock();
+        javaScriptTestRunReader = new JasmineReader();
 
     }
 
