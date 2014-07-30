@@ -41,7 +41,7 @@ public class JasmineReader implements JavaScriptTestRunReader {
         List<JavaScriptTestRun> testRuns = new ArrayList<JavaScriptTestRun>();
         web.open(jsTestUrl); // load the url
 
-        if (web.isElementPresent("css=.summaryMenuItem")) {
+        if (web.isElementPresent("css=.summaryMenuItem") && web.isVisible("css=.summaryMenuItem")) {
             web.click("css=.summaryMenuItem"); // click one of the menu-button to get to the resultpage
         }
 
