@@ -48,7 +48,7 @@ public class JasmineReader implements JavaScriptTestRunReader {
             return testRuns;
             // throw new IllegalArgumentException("The URL " + jsTestUrl + "did not link to a Jasmine Testpage");
         }
-        if (web.isElementPresent("css=.summaryMenuItem")) {
+        if (web.isElementPresent("css=.summaryMenuItem") && web.isVisible("css=.summaryMenuItem")) {
             web.click("css=.summaryMenuItem"); // click one of the menu-button to get to the resultpage
         }
 
