@@ -21,6 +21,7 @@ public class JasmineReader implements JavaScriptTestRunReader {
      * Selenium, offers possibilities to get information about WebElements displayed by the browser.
      */
     private Selenium web;
+    private int testCounter;
 
     @Override
     public void startUp() {
@@ -41,6 +42,12 @@ public class JasmineReader implements JavaScriptTestRunReader {
         List<JavaScriptTestRun> testRuns = new ArrayList<JavaScriptTestRun>();
         web.open(jsTestUrl); // load the url
 
+        if (!isJasmineTest(jsTestUrl)) {
+            testCounter++;
+            testRuns.add(new JavaScriptTestRun("loadingJasmineTestPage" + testCounter, false, "The URL " + jsTestUrl + " doesn't link to a Jasmine testpage."));
+            return testRuns;
+            // throw new IllegalArgumentException("The URL " + jsTestUrl + "did not link to a Jasmine Testpage");
+        }
         if (web.isElementPresent("css=.summaryMenuItem")) {
             web.click("css=.summaryMenuItem"); // click one of the menu-button to get to the resultpage
         }
@@ -65,6 +72,18 @@ public class JasmineReader implements JavaScriptTestRunReader {
         }
 
         return testRuns;
+    }
+
+    private boolean isJasmineTest(String jsTestUrl) {
+        String jasmineTitle = "css=.banner > .title";
+        if (!web.isElementPresent(jasmineTitle)) {
+            return false;
+        }
+        if (!web.getText(jasmineTitle).equals("Jasmine")) {
+            System.out.println("not jasmine in title");
+            return false;
+        }
+        return true;
     }
 
     /**

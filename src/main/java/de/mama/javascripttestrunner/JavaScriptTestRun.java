@@ -10,7 +10,7 @@ import org.junit.runners.model.FrameworkMethod;
  */
 public class JavaScriptTestRun {
     private final String name;
-    private final boolean successful;
+    private final JavaScriptException exception;
 
     /**
      *
@@ -20,13 +20,17 @@ public class JavaScriptTestRun {
      *            true if the test was successful
      */
     public JavaScriptTestRun(String name, boolean successful) {
+        this(name, successful, null);
+    }
+
+    public JavaScriptTestRun(String name, boolean successful, String description) {
         this.name = name;
-        this.successful = successful;
+        exception = successful ? null : new JavaScriptException(description);
     }
 
     @Override
     public String toString() {
-        String success = successful ? " [PASSED]" : " [FAILED]";
+        String success = exception == null ? " [PASSED]" : " [FAILED]";
         return name + success;
     }
 
@@ -34,7 +38,7 @@ public class JavaScriptTestRun {
      * returns a (partly mocked) instance of {@link FrameworkMethod}. This instance returns correct name and has correct behaviour for #invokeExplosively
      */
     public FrameworkMethod getFrameworkMethod() {
-        return new MockedFrameworkMethod(name, successful);
+        return new MockedFrameworkMethod(name, exception);
     }
 
     /**
@@ -42,12 +46,12 @@ public class JavaScriptTestRun {
      */
     public static class MockedFrameworkMethod extends FrameworkMethod {
         private String name;
-        private boolean successful;
+        private JavaScriptException exception;
 
-        public MockedFrameworkMethod(String name, boolean successful) {
+        public MockedFrameworkMethod(String name, JavaScriptException exception) {
             super(null);
             this.name = name;
-            this.successful = successful;
+            this.exception = exception;
         }
 
         @Override
@@ -57,8 +61,8 @@ public class JavaScriptTestRun {
 
         @Override
         public Object invokeExplosively(Object target, Object... params) throws Throwable {
-            if (!successful) {
-                throw new JavaScriptException();
+            if (exception != null) {
+                throw exception;
             }
             return null;
         }

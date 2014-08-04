@@ -6,7 +6,7 @@ package de.mama.javascripttestrunner;
 public class JavaScriptException extends RuntimeException {
     private static final long serialVersionUID = 1L;
 
-    public JavaScriptException() {
-        super("This JavaScript Test failed");
+    public JavaScriptException(String description) {
+        super(description != null ? description : "This JavaScript Test failed");
     }
 }
